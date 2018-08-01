@@ -65,7 +65,6 @@ function startOfNextWorkingDay(date){
             result.setHours(workingHours[dayLiteral].from);
             result.setMinutes(0);
             result.setSeconds(0);
-            console.log(result);
             return result;
         }
     }
