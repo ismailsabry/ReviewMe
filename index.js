@@ -16,7 +16,8 @@ module.exports.start = function start(config) {
             botEmoji: app.botEmoji || config.botEmoji,
             channel: app.channel || config.channel,
             sendByEmail: app.sendByEmail || config.sendByEmail,
-            emailOptions: app.emailOptions || config.emailOptions
+            emailOptions: app.emailOptions || config.emailOptions,
+            waitUntilWorkingHours: app.waitUntilWorkingHours || config.waitUntilWorkingHours
         })
     }
 };

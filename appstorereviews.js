@@ -1,5 +1,6 @@
 const controller = require('./reviews');
 const ejs = require('ejs');
+const scheduler = require('./scheduler');
 var request = require('request');
 require('./constants');
 
@@ -118,15 +119,25 @@ exports.parseAppStoreReview = function (rssItem, config, appInformation) {
     return review;
 };
 
+function postReview(review, config, appInformation){
+    var message = slackMessage(review, config, appInformation);
+    controller.postToSlack(message, config);
+    if(config.sendByEmail){
+        email(review, config, appInformation, function(data){
+            controller.sendEmails(data, config);
+        });
+    }
+}
+
 function publishReview(appInformation, config, review, force) {
     if (!controller.reviewPublished(review) || force) {
         if (config.verbose) console.log("INFO: Received new review: " + JSON.stringify(review));
-        var message = slackMessage(review, config, appInformation);
-        controller.postToSlack(message, config);
-        if(config.sendByEmail){
-            email(review, config, appInformation, function(data){
-                controller.sendEmails(data, config);
+        if(config.waitUntilWorkingHours && !scheduler.isNowWorkingHour()){
+            scheduler.scheduleTask(function(){
+                postReview(appInformation,config,review);
             });
+        }else{
+            postReview(appInformation, config, review);
         }
         controller.markReviewAsPublished(config, review);
     } else if (controller.reviewPublished(config, review)) {

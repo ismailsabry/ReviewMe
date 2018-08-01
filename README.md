@@ -55,6 +55,14 @@ ReviewMe requires a config file. A simple config looks something like:
     "from": "mail@exmple.com",
     "senderName": "Reviews",
     "recipientList": ["recipient1@gmail.com", "recipient2@gmail.com"]
+  },
+  "waitUntilWorkingHours": true,
+  "workingHours":{
+    "mon": {"from": 9, "to": 17},
+    "tue": {"from": 9, "to": 17},
+    "wed": {"from": 9, "to": 17},
+    "thu": {"from": 9, "to": 17},
+    "fri": {"from": 9, "to": 17}
   }
 }
 ```
@@ -70,6 +78,8 @@ ReviewMe requires a config file. A simple config looks something like:
 * **apps** A list of apps to fetch reviews for. See App Options below
 * **publisherKey** *Android Only* The path to a Google Play Publisher private key (`.json` file). Used for accessing the Google Play Publisher API.
 * **sendByEmail** When enabled, new reviews will be sent by email
+* **waitUntilWorkingHours** When enabled, reviews that are sent not during the working hours are scheduled on the beginning of the next working hours
+* **workingHours** The working hours for each working day, from and to must be set for each defined working day, if a day of the week is not defined, it is considered off
 
 ### App options
 
